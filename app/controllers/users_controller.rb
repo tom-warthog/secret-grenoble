@@ -10,10 +10,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(email: params[:user][:email], password: params[:user][:password_digest], password_confirmation: params[:user][:password_digest])
-    log_in(@user)
-    flash[:success] = "Bienvenue ma men!"
-    redirect_to user_path id: @user.id
+    @user = User.new(email: params[:user][:email], password: params[:user][:password_digest], password_confirmation: params[:user][:password_digest])
+    if @user.valid?
+      @user.save
+      log_in(@user)
+      flash[:success] = "Bienvenue ma men!"
+      redirect_to user_path id: @user.id
+    else
+      flash.now[:danger] = 'Invalid email (empty or already taken)'
+      render 'new'
+    end
   end
 
   def show
@@ -33,7 +39,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    redirect_to users_path
+    redirect_to '/'
   end
 
   private

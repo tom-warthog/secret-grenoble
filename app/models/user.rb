@@ -2,9 +2,9 @@ class User < ApplicationRecord
   attr_accessor :remember_token
 
   has_secure_password
-  # validates :email, presence: true
-  # validates :email, uniqueness: true
-  # TODO: Fix validation issue
+  validates :email, presence: true
+  validates :email, uniqueness: true
+
 
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
