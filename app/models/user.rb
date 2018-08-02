@@ -1,5 +1,5 @@
 class User < ApplicationRecord
   has_secure_password
-  validates presence: true
-  validates uniqueness: true
+  validates :email, presence: true
+  validates :email, uniqueness: true
 end
