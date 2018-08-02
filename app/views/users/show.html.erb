@@ -3,5 +3,6 @@
 <p> User ID: <%= @user.id %></p>
 <p> User email: <%= @user.email %></p>
 <br>
-<a href="<%= edit_user_path %>">Edit user</a>
-<%= link_to 'Delete user', @user, method: :delete %>
+
+<%= link_to 'Delete user', @user, method: :delete, class: 'btn btn-danger' %>
+<%= button_to "Edit user", edit_user_path, class: 'btn btn-primary', method: :get %>
