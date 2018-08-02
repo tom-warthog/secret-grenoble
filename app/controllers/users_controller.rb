@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update]
+  
   def index
   end
 
@@ -8,8 +11,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.create(email: params[:user][:email], password_digest: params[:user][:password_digest])
-      redirect_to user_path id: @user.id
-      end
+    log_in(@user)
+    flash[:success] = "Bienvenue ma men!"
+    redirect_to user_path id: @user.id
+  end
 
   def show
     @user = User.find(params[:id])
@@ -20,18 +25,14 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    @user = User.create(email: params[:user][:email], password_digest: params[:user][:password_digest])
-    redirect_to user_path id: @user.id
+    user = User.find(params[:id])
+    user = User.create(email: params[:user][:email], password_digest: params[:user][:password_digest])
+    redirect_to user_path id: user.id
   end
 
   def destroy
     @user = User.find(params[:id])
-    puts params
-    puts params
     @user.destroy
-
     redirect_to users_path
-
   end
 end

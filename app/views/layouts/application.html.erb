@@ -10,29 +10,39 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="<%= root_path %>">Secret of the Universe</a>
+      <a class="navbar-brand" href="<%= root_path %>">Home</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Log in<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="<%= new_user_path %>">Sign up<span class="sr-only">(current)</span></a>
-          </li>
+          <% if logged_in? %>
+            <li class="nav-item active">
+              <%= link_to "Log out", logout_path, method: :delete %>
+            </li>
+          <% else %>
+            <li class="nav-item active">
+              <a class="nav-link" href="<%= login_path %>">Log in<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="<%= new_user_path %>">Sign up<span class="sr-only">(current)</span></a>
+            </li>
+          <% end %>
         </ul>
       </div>
     </nav>
 
-    <div class="container" style="padding-top: 5rem;">
+    <div class="container main">
+      <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
       <%= yield %>
+      <%= debug(params) if Rails.env.development? %>
+      Logged in: <%= logged_in? %>
     </div>
-
   </body>
 </html>
